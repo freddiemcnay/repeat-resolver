@@ -59,6 +59,7 @@ The classifier uses a sliding window approach combined with minimap2 alignment t
 3. **Select best match**: For each window, calculate percent identity for all alignments and select the unit with the highest score
    - If best identity ≥ threshold (default 40%) → assign that unit
    - If best identity < threshold → assign 'U' (undetermined)
+   - Minimap2's stringency means windows will typically produce no alignment with units they do not belong to
 
 4. **Determine uppercase/lowercase**: Check where the window aligns on the reference unit
    - Aligns to first 30% of unit → Uppercase (A, B, C, D) = start of tandem repeat
@@ -314,7 +315,6 @@ awk 'NR>1 {print $2}' results_structures.txt | sort | uniq -c
 **Solutions**:
 - If windows span multiple units → decrease window size
 - If alignments are poor quality → increase window size
-- Rule of thumb: window = 1/3 to 1/2 of unit length
 
 ### Tandem counts seem incorrect
 
@@ -353,27 +353,4 @@ For large datasets (>10,000 reads or very long reads), consider running on a com
 - Check alignment quality across reads
 - Troubleshoot specific assignments
 
-## Citation
 
-If you use this tool in your research, please cite:
-
-[Your citation information here]
-
-## Author
-
-Freddie  
-Transmissible Cancer Group, Murchison Lab  
-Department of Veterinary Medicine, University of Cambridge
-
-## License
-
-[Your license here]
-
-## Version History
-
-- **v2.0** (2026-02-06): Added strand awareness and structure summary
-- **v1.0** (2026-02-04): Initial release
-
-## Contact
-
-For questions, issues, or feature requests, contact Freddie in the Transmissible Cancer Group.
