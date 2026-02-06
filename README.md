@@ -14,13 +14,13 @@ A bioinformatics tool for analyzing long sequencing reads containing complex rep
 
 ```bash
 # Basic usage
-./repeat_classifier_final.py \
+./repeat-resolver.py \
     -i reads.fasta \
     -u units.fasta \
     -o output_prefix
 
 # With custom parameters
-./repeat_classifier_final.py \
+./repeat-resolver.py \
     -i reads.fasta \
     -u units.fasta \
     -o output_prefix \
@@ -39,7 +39,7 @@ A bioinformatics tool for analyzing long sequencing reads containing complex rep
 minimap2 --version
 
 # Make script executable
-chmod +x repeat_classifier_final.py
+chmod +x repeat-resolver.py
 ```
 
 ## How It Works
@@ -247,7 +247,7 @@ Simplified: C×2
 # - units.fasta: your A, B, C, D unit sequences
 
 # 2. Run classifier with default settings
-./repeat_classifier_final.py -i reads.fasta -u units.fasta -o results
+./repeat-resolver.py -i reads.fasta -u units.fasta -o results
 
 # 3. Check outputs
 head results_structures.txt
@@ -257,7 +257,7 @@ head results_structure_summary.txt
 grep "C×3-D×2" results_structures.txt
 
 # 5. If results look off, adjust parameters
-./repeat_classifier_final.py \
+./repeat-resolver.py \
     -i reads.fasta \
     -u units.fasta \
     -o results_v2 \
