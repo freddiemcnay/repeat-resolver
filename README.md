@@ -272,7 +272,6 @@ awk 'NR>1 {print $2}' results_structures.txt | sort | uniq -c
 **Solutions**:
 - If windows span multiple units → decrease window size
 - If alignments are poor quality → increase window size
-- Rule of thumb: window = 1/3 to 1/2 of unit length
 
 ### Tandem counts seem incorrect
 
@@ -297,7 +296,6 @@ Processing time scales with:
 - Number of units
 - Window size (smaller = more windows = slower)
 
-For large datasets (>10,000 reads or very long reads), consider running on a computing cluster. Temporary files are automatically cleaned up.
 
 ## Quality Control
 
@@ -311,27 +309,5 @@ For large datasets (>10,000 reads or very long reads), consider running on a com
 - Check alignment quality across reads
 - Troubleshoot specific assignments
 
-## Citation
 
-If you use this tool in your research, please cite:
 
-[Your citation information here]
-
-## Author
-
-Freddie  
-Transmissible Cancer Group, Murchison Lab  
-Department of Veterinary Medicine, University of Cambridge
-
-## License
-
-[Your license here]
-
-## Version History
-
-- **v2.0** (2026-02-06): Added strand awareness and structure summary
-- **v1.0** (2026-02-04): Initial release
-
-## Contact
-
-For questions, issues, or feature requests, contact Freddie in the Transmissible Cancer Group.
