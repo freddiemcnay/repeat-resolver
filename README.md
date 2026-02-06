@@ -42,6 +42,48 @@ minimap2 --version
 chmod +x repeat_classifier_final.py
 ```
 
+## How It Works
+
+The classifier uses a sliding window approach combined with minimap2 alignment to identify repeat structures:
+
+### Step-by-Step Process
+
+1. **Divide read into windows**: Each input read is split into non-overlapping windows (default 1000 bp)
+
+2. **Align each window to all units**: For every window, the script runs minimap2 **separately** against each unit sequence (A, B, C, D, etc.)
+   - Window 1 → align to unit A, then unit B, then unit C, then unit D...
+   - Window 2 → align to unit A, then unit B, then unit C, then unit D...
+   - Window 3 → align to unit A, then unit B, then unit C, then unit D...
+   - And so on...
+
+3. **Select best match**: For each window, calculate percent identity for all alignments and select the unit with the highest score
+   - If best identity ≥ threshold (default 40%) → assign that unit
+   - If best identity < threshold → assign 'U' (undetermined)
+
+4. **Determine uppercase/lowercase**: Check where the window aligns on the reference unit
+   - Aligns to first 30% of unit → Uppercase (A, B, C, D) = start of tandem repeat
+   - Aligns to last 70% of unit → Lowercase (a, b, c, d) = continuation of tandem repeat
+
+5. **Track strand orientation**: minimap2 automatically tests both forward and reverse complement
+   - Record which strand each window aligned to (+/-)
+   - Determine overall read orientation by majority vote
+
+6. **Build structure**: Concatenate all window assignments into a structure string (e.g., `C-c-c-D-d-U-A-a`)
+
+7. **Simplify structure**: 
+   - If read is reverse strand, reverse the structure to get true 5'→3' orientation
+   - Count tandem copies (lowercase→uppercase transitions)
+   - Collapse consecutive U's
+   - Generate simplified format (e.g., `C-D-U-A`)
+
+### Why This Approach Works
+
+- **Independent alignments**: Running minimap2 separately for each unit ensures we get accurate percent identity for each possible match
+- **Best-match selection**: Choosing the highest-scoring unit gives confident assignments
+- **Threshold filtering**: The identity threshold (default 40%) prevents weak/ambiguous assignments
+- **Positional information**: Alignment coordinates on the reference unit enable tandem repeat detection
+- **Strand awareness**: Tracking alignment strand ensures correct interpretation of reverse-aligned reads
+
 ## Input Files
 
 ### 1. Reads File (-i, --input)
@@ -272,6 +314,7 @@ awk 'NR>1 {print $2}' results_structures.txt | sort | uniq -c
 **Solutions**:
 - If windows span multiple units → decrease window size
 - If alignments are poor quality → increase window size
+- Rule of thumb: window = 1/3 to 1/2 of unit length
 
 ### Tandem counts seem incorrect
 
@@ -296,6 +339,7 @@ Processing time scales with:
 - Number of units
 - Window size (smaller = more windows = slower)
 
+For large datasets (>10,000 reads or very long reads), consider running on a computing cluster. Temporary files are automatically cleaned up.
 
 ## Quality Control
 
@@ -309,5 +353,27 @@ Processing time scales with:
 - Check alignment quality across reads
 - Troubleshoot specific assignments
 
+## Citation
 
+If you use this tool in your research, please cite:
 
+[Your citation information here]
+
+## Author
+
+Freddie  
+Transmissible Cancer Group, Murchison Lab  
+Department of Veterinary Medicine, University of Cambridge
+
+## License
+
+[Your license here]
+
+## Version History
+
+- **v2.0** (2026-02-06): Added strand awareness and structure summary
+- **v1.0** (2026-02-04): Initial release
+
+## Contact
+
+For questions, issues, or feature requests, contact Freddie in the Transmissible Cancer Group.
