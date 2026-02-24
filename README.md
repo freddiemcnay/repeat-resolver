@@ -178,7 +178,7 @@ U                       340     9.01
 - `map-ont`: Oxford Nanopore reads
 - `map-pb`: Older PacBio CLR reads
 - `asm20`: Highly similar sequences
-
+- `sr`: Short read alignments. Good for RNA-seq data.
 ## Understanding Results
 
 ### Structure Notation
