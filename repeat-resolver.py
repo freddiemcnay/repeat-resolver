@@ -367,7 +367,7 @@ def main():
     parser.add_argument('-c', '--uppercase-threshold', type=float, default=0.3,
                        help='Fraction of unit length for uppercase assignment (0.3 = first 30%%)')
     parser.add_argument('-p', '--preset', default='map-hifi',
-                       choices=['map-ont', 'map-hifi', 'map-pb', 'asm20'],
+                       choices=['map-ont', 'map-hifi', 'map-pb', 'asm20', 'sr'],
                        help='Minimap2 preset')
     
     args = parser.parse_args()
